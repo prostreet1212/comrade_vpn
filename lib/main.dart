@@ -26,7 +26,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'OpenVpn Demo',
       home: SplashScreen(),
-      theme: ThemeData(
+      theme: ThemeData(useMaterial3: false,
+        buttonTheme: ButtonThemeData(
+        ),
         appBarTheme: AppBarTheme(centerTitle: true,elevation: 3)
       ),
       debugShowCheckedModeBanner: false,
