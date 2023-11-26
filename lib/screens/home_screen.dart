@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -52,7 +53,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('OpenVPN Demo')),
+      appBar: AppBar(
+        leading: Icon(CupertinoIcons.home),
+        title: Text('Comrade VPN'),
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.brightness_medium,size: 26,)),
+          IconButton(
+            padding: EdgeInsets.only(right: 8),
+              onPressed: () {}, icon: Icon(CupertinoIcons.info,size: 27,))
+        ],
+      ),
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(20),
@@ -61,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                _vpnButton(),
                 Center(
                   child: TextButton(
                     style: TextButton.styleFrom(
@@ -125,4 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
       VpnEngine.stopVpn();
     }
   }
+
+
+  Widget _vpnButton()=>Container(
+    decoration: BoxDecoration(),
+  );
 }
