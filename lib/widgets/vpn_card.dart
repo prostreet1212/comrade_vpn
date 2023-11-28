@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vpn_basic_project/models/vpn.dart';
+import 'package:vpn_basic_project/services/vpn_engine.dart';
 
+import '../controllers/home_controller.dart';
 import '../main.dart';
 
 class VpnCard extends StatelessWidget {
@@ -14,12 +16,26 @@ class VpnCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller=Get.find<HomeController>();
     return Card(
       margin:EdgeInsets.symmetric(vertical: mq.height*.01) ,
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: InkWell(
-        onTap: (){},
+        onTap: (){
+          controller.vpn.value=vpn;
+          Get.back();
+          if(controller.vpnState.value==VpnEngine.vpnConnected){
+            VpnEngine.stopVpn();
+            Future.delayed(Duration(seconds: 2),()=> controller.connectToVpn()
+            );
+
+          }else{
+            controller.connectToVpn();
+
+          }
+
+        },
         borderRadius: BorderRadius.circular(15),
         child: ListTile(
           leading: Container(
@@ -33,6 +49,7 @@ class VpnCard extends StatelessWidget {
               child: Image.asset(
                 'assets/flags/${vpn.countryShort.toLowerCase()}.png',
                 height: 40,
+                width: mq.width*.15,
                 fit: BoxFit.cover,
               ),
             ),

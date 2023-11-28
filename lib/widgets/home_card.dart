@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:get/instance_manager.dart';
+import 'package:vpn_basic_project/controllers/home_controller.dart';
 
 import '../main.dart';
 
@@ -16,6 +18,7 @@ class HomeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
       width: mq.width * .45,
       child: Column(

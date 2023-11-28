@@ -10,30 +10,14 @@ import 'package:vpn_basic_project/widgets/vpn_card.dart';
 
 import '../main.dart';
 
-class LocationScreen extends StatefulWidget {
-  const LocationScreen({Key? key}) : super(key: key);
-
-  @override
-  State<LocationScreen> createState() => _LocationScreenState();
-}
-
-class _LocationScreenState extends State<LocationScreen> {
-  final _controller = LocationController(); //Get.find<LocationController>();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.getVPNData();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+class LocationScreen extends StatelessWidget {
+   LocationScreen({super.key});
+  final _controller = LocationController();
 
   @override
   Widget build(BuildContext context) {
+
+    _controller.getVPNData();
     return Obx(
       () => Scaffold(
         appBar: AppBar(
