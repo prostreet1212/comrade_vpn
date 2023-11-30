@@ -1,18 +1,17 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:vpn_basic_project/controllers/home_controller.dart';
 import 'package:vpn_basic_project/screens/location_screen.dart';
+import 'package:vpn_basic_project/screens/network_test_screen.dart';
 import 'package:vpn_basic_project/widgets/count_down_timer.dart';
 import 'package:vpn_basic_project/widgets/home_card.dart';
 
+import '../helpers/pref.dart';
 import '../main.dart';
 import '../models/vpn_config.dart';
 import '../models/vpn_status.dart';
@@ -36,7 +35,8 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                Get.changeThemeMode(Get.isDarkMode?ThemeMode.light:ThemeMode.dark);
+                Get.changeThemeMode(Pref.isDarkMode?ThemeMode.light:ThemeMode.dark);
+                Pref.isDarkMode=!Pref.isDarkMode;
               },
               icon: Icon(
                 Icons.brightness_medium,
@@ -44,14 +44,16 @@ class HomeScreen extends StatelessWidget {
               )),
           IconButton(
               padding: EdgeInsets.only(right: 8),
-              onPressed: () {},
+              onPressed: () {
+                Get.to(()=>NetworkTestScreen());
+              },
               icon: Icon(
                 CupertinoIcons.info,
                 size: 27,
               ))
         ],
       ),
-      bottomNavigationBar: _changeLocation(),
+      bottomNavigationBar: _changeLocation(context),
       body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Obx(
           () => _vpnButton(),
@@ -72,6 +74,7 @@ class HomeScreen extends StatelessWidget {
                       ? Icon(
                           Icons.vpn_lock_rounded,
                           size: 30,
+                    color: Colors.white,
                         )
                       : null,
                   backgroundImage: _controller.vpn.value.countryLong.isEmpty
@@ -211,13 +214,13 @@ class HomeScreen extends StatelessWidget {
             startTimer: _controller.vpnState.value == VpnEngine.vpnConnected)),
       ]);
 
-  Widget _changeLocation() => SafeArea(
+  Widget _changeLocation(BuildContext context) => SafeArea(
         child: Semantics(
           button: true,
           child: InkWell(
             onTap: () => Get.to(() => LocationScreen()),
             child: Container(
-              color: Colors.blue,
+              color: Theme.of(context).bottomNav,
               padding: EdgeInsets.symmetric(horizontal: mq.width * .04),
               height: 60,
               child: Row(

@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Text(
                 'Made in Russia',
                 textAlign: TextAlign.center,
-                style: TextStyle(color:Colors.black54,letterSpacing: 1),
+                style: TextStyle(color:Theme.of(context).lightText,letterSpacing: 1),
               ))
         ],
       ),

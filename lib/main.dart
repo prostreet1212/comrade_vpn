@@ -39,14 +39,15 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(centerTitle: true,elevation: 3),
         floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Colors.orange)
       ),
-      themeMode: ThemeMode.light,
+      themeMode: Pref.isDarkMode?ThemeMode.dark:ThemeMode.light,
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
 extension AppTheme on ThemeData{
-  Color get lightText=>Get.isDarkMode?Colors.white70:Colors.black54;
+  Color get lightText=>Pref.isDarkMode?Colors.white70:Colors.black54;
+  Color get bottomNav=>Pref.isDarkMode?Colors.white12:Colors.blue;
 }
 
 
