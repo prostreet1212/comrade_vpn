@@ -35,7 +35,9 @@ class HomeScreen extends StatelessWidget {
         title: Text('Comrade VPN'),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.changeThemeMode(Get.isDarkMode?ThemeMode.light:ThemeMode.dark);
+              },
               icon: Icon(
                 Icons.brightness_medium,
                 size: 26,
@@ -64,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                     : _controller.vpn.value.countryLong,
                 subtitle: 'FREE',
                 icon: CircleAvatar(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Colors.blue,
                   radius: 30,
                   child: _controller.vpn.value.countryLong.isEmpty
                       ? Icon(

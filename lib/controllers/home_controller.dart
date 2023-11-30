@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
+import '../helpers/pref.dart';
 import '../models/vpn.dart';
 import '../models/vpn_config.dart';
 import '../services/vpn_engine.dart';
 
 class HomeController extends GetxController{
+  final Rx<Vpn>  vpn=Pref.vpn.obs;
 
-
-  final Rx<Vpn>  vpn=Vpn.fromJson({}).obs;
   final RxString vpnState = VpnEngine.vpnDisconnected.obs;
-  final RxBool startTimer=false.obs;
+
 
   void connectToVpn() {
 
@@ -32,11 +32,10 @@ class HomeController extends GetxController{
           password: 'vpn',
           config: config);
 
-      startTimer.value = true;
+
       VpnEngine.startVpn(vpnConfig);
     } else {
       ///Stop if stage is "not" disconnected
-      startTimer.value = false;
       VpnEngine.stopVpn();
     }
 

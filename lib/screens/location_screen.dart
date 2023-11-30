@@ -11,18 +11,27 @@ import 'package:vpn_basic_project/widgets/vpn_card.dart';
 import '../main.dart';
 
 class LocationScreen extends StatelessWidget {
-   LocationScreen({super.key});
+
   final _controller = LocationController();
 
   @override
   Widget build(BuildContext context) {
-
-    _controller.getVPNData();
+if(_controller.vpnList.isEmpty)_controller.getVPNData();
     return Obx(
       () => Scaffold(
         appBar: AppBar(
           title: Text('VPN Locations (${_controller.vpnList.length})'),
         ),
+        floatingActionButton:Padding(
+          padding: EdgeInsets.only(bottom: 10,right: 10),
+          child: FloatingActionButton(
+            child: Icon(CupertinoIcons.refresh),
+            onPressed: (){
+              _controller.getVPNData();
+            },
+          ),
+        ) ,
+
         body: _controller.isLoading.value
             ? _loadingWidget()
             : _controller.vpnList.isEmpty

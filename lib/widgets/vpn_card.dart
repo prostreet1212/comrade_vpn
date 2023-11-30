@@ -7,6 +7,7 @@ import 'package:vpn_basic_project/models/vpn.dart';
 import 'package:vpn_basic_project/services/vpn_engine.dart';
 
 import '../controllers/home_controller.dart';
+import '../helpers/pref.dart';
 import '../main.dart';
 
 class VpnCard extends StatelessWidget {
@@ -24,6 +25,7 @@ class VpnCard extends StatelessWidget {
       child: InkWell(
         onTap: (){
           controller.vpn.value=vpn;
+          Pref.vpn=vpn;
           Get.back();
           if(controller.vpnState.value==VpnEngine.vpnConnected){
             VpnEngine.stopVpn();
@@ -79,7 +81,7 @@ class VpnCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black54,
+                  color: Theme.of(context).lightText,
                 ),
               ),
               SizedBox(
