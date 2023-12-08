@@ -20,7 +20,7 @@ if(_controller.vpnList.isEmpty)_controller.getVPNData();
     return Obx(
       () => Scaffold(
         appBar: AppBar(
-          title: Text('VPN Locations (${_controller.vpnList.length})'),
+          title: Text('VPN серверы (${_controller.vpnList.length})'),
         ),
         floatingActionButton:Padding(
           padding: EdgeInsets.only(bottom: 10,right: 10),
@@ -64,7 +64,7 @@ if(_controller.vpnList.isEmpty)_controller.getVPNData();
               width: mq.width * .7,
             ),
             Text(
-              'loading VPNs...😌',
+              'Загрузка VPN серверов',
               style: TextStyle(
                   fontSize: 18,
                   color: Colors.black54,
@@ -76,7 +76,7 @@ if(_controller.vpnList.isEmpty)_controller.getVPNData();
 
   _noVPNFound() => Center(
         child: Text(
-          'VPNs not found 😔',
+          'VPN серверы не найдены 😔',
           style: TextStyle(
               fontSize: 18, color: Colors.black54, fontWeight: FontWeight.bold),
         ),

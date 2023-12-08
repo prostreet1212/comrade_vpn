@@ -56,6 +56,7 @@ class VpnEngine {
       stage().then((value) => value?.toLowerCase() == "connected");
 
   ///All Stages of connection
+
   static const String vpnConnected = "connected";
   static const String vpnDisconnected = "disconnected";
   static const String vpnWaitConnection = "wait_connection";

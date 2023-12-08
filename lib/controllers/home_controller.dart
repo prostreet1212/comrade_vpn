@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+
 import 'package:vpn_basic_project/helpers/my_dialogs.dart';
 
 import '../helpers/pref.dart';
@@ -16,7 +17,7 @@ class HomeController extends GetxController {
 
   final RxString vpnState = VpnEngine.vpnDisconnected.obs;
 
-  void connectToVpn() {
+  void connectToVpn() async{
     if (vpn.value.openVPNConfigDataBase64.isEmpty) {
       MyDialogs.info(
         msg: 'Select a Location by clicking \'Change Location\'',);
@@ -25,20 +26,48 @@ class HomeController extends GetxController {
 
     if (vpnState.value == VpnEngine.vpnDisconnected) {
       final data = Base64Decoder().convert(vpn.value.openVPNConfigDataBase64);
-      final config = Utf8Decoder().convert(data);
-
+      final String config = Utf8Decoder().convert(data);
       final vpnConfig = VpnConfig(
           country: vpn.value.countryLong,
           username: 'vpn',
           password: 'vpn',
           config: config);
+      await VpnEngine.startVpn(vpnConfig);
 
-      VpnEngine.startVpn(vpnConfig);
+
+
     } else {
       ///Stop if stage is "not" disconnected
-      VpnEngine.stopVpn();
+      await VpnEngine.stopVpn();
     }
   }
+
+  String convertStatus(String status){
+    switch(status){
+      case 'connected':
+        return 'Подключено';
+      case 'disconnected':
+        return 'Отключено';
+      case 'wait_connection':
+        return 'ожидание соединения';
+      case 'authenticating':
+        return 'Аутентификация';
+      case 'reconnect':
+        return 'Переподключение';
+      case 'no_connection':
+        return 'Нет соединения';
+      case 'connecting':
+        return 'Подключение';
+      case 'prepare':
+        return 'Подготовка';
+      case 'denied':
+        return 'Недоступен';
+      default:
+        return status;
+
+    }
+  }
+
 
   Future<void> initializeData() async {}
 
@@ -56,13 +85,13 @@ class HomeController extends GetxController {
   String get getButtonText {
     switch (vpnState.value) {
       case VpnEngine.vpnDisconnected:
-        return 'Tap to Connect';
+        return 'Подключить';
 
       case VpnEngine.vpnConnected:
-        return 'Disconnect';
+        return 'Отключить';
 
       default:
-        return 'Connecting...';
+        return 'Соединение';
     }
   }
 }

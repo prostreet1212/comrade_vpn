@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:csv/csv.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:http/http.dart';
@@ -35,7 +36,11 @@ class APIs {
       MyDialogs.error(msg: e.toString());
       print('getVPNServerE: $e');
     }
-    vpnList.shuffle();
+    //vpnList.shuffle();
+    log(vpnList[0].openVPNConfigDataBase64);
+    final data = Base64Decoder().convert(vpnList[0].openVPNConfigDataBase64);
+    final String config = Utf8Decoder().convert(data);
+    log(config);
     if (vpnList.isNotEmpty) Pref.vpnList = vpnList;
 
     return vpnList;

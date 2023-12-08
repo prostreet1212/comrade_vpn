@@ -7,8 +7,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!-- Ads Permission for Android 12 or higher -->
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+
     
     
     <application
@@ -16,6 +15,7 @@
         android:label="ComradeVpn"
         android:icon="@mipmap/ic_launcher"
         tools:ignore="AllowBackup">
+
         
         <activity
             android:name=".MainActivity"
@@ -30,10 +30,7 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"/>
 
-            <meta-data
-                android:name="com.google.android.gms.ads.APPLICATION_ID"
-                android:value="ca-app-pub-3940256099942544~3347511713"/>
-       
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

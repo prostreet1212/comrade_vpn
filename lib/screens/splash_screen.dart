@@ -20,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(Duration(milliseconds: 1500),(){
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
       Get.off(()=>HomeScreen());
-      //Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>HomeScreen()));
     });
   }
   
@@ -32,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           Positioned(
             left: mq.width * .3,
-            top: mq.height * .2,
+            top: mq.height * .25,
             width: mq.width * .4,
             child: Image.asset('assets/images/logo.png'),
           ),
@@ -40,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
               bottom: mq.height * .15,
               width: mq.width,
               child: Text(
-                'Made in Russia',
+                'Любимый vpn товарища майора',
                 textAlign: TextAlign.center,
                 style: TextStyle(color:Theme.of(context).lightText,letterSpacing: 1),
               ))

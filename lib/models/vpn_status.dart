@@ -3,8 +3,8 @@ class VpnStatus {
 
   String? duration;
   String? lastPacketReceive;
-  String? byteIn;
-  String? byteOut;
+  String? byteIn='--';
+  String? byteOut='--';
 
   factory VpnStatus.fromJson(Map<String, dynamic> json) => VpnStatus(
         duration: json['duration'],
