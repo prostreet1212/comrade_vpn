@@ -127,9 +127,9 @@ class HomeScreen extends StatelessWidget {
                   title:_controller.vpnState.value==VpnEngine.vpnDisconnected?'0 кбит/с':
                       '${snapshot.connectionState == ConnectionState.active && snapshot.data?.byteIn == ' ' ? '--'
                           : snapshot.data?.byteIn
-                          ?.replaceFirst('kB', 'кб')
-                          .replaceAll('kB/s', 'кб/с')
-                          .replaceAll('B/s', 'б/с') ?? '0 кбит/с'}',
+                          ?.replaceFirst('kB', 'кбит')
+                          .replaceAll('kB/s', 'кбит/с')
+                          .replaceAll('B/s', 'бит/с') ?? '0 кбит/с'}',
                   subtitle: 'Скачивание',
                   icon: CircleAvatar(
                     radius: 30,
@@ -145,8 +145,8 @@ class HomeScreen extends StatelessWidget {
                   title:  _controller.vpnState==VpnEngine.vpnDisconnected?'0 кбит/с':
                   '${snapshot.connectionState == ConnectionState.active && snapshot.data?.byteOut == ' ' ? '--'
                       : snapshot.data?.byteOut
-                      ?.replaceFirst('kB', 'кб')
-                      .replaceAll('kB/s', 'кб/с')
+                      ?.replaceFirst('kB', 'кбит')
+                      .replaceAll('kB/s', 'кбит/с')
                       .replaceAll('B/s', 'б/с') ?? '0 кбит/с'}',
                   subtitle: 'Загрузка',
                   icon: CircleAvatar(
