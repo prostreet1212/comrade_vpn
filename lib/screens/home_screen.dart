@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:get/get_utils/get_utils.dart';
@@ -24,22 +23,24 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    _controller.verifyConnect();
+    //_controller.vpnState.value = VpnEngine.vpnConnected;
     ///Add listener to update vpn state
     VpnEngine.vpnStageSnapshot().listen((event) {
       _controller.vpnState.value = event;
     });
-
+    print(_controller.vpnState.value);
 
     return Scaffold(
       appBar: AppBar(
         //leading: Icon(CupertinoIcons.home),
-        title: Text('Comrade VPN'),
+        title: Text('Камрад ВПН'),
         actions: [
           IconButton(
               onPressed: () {
-                Get.changeThemeMode(Pref.isDarkMode?ThemeMode.light:ThemeMode.dark);
-                Pref.isDarkMode=!Pref.isDarkMode;
+                Get.changeThemeMode(
+                    Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+                Pref.isDarkMode = !Pref.isDarkMode;
               },
               icon: Icon(
                 Icons.brightness_medium,
@@ -48,7 +49,7 @@ class HomeScreen extends StatelessWidget {
           IconButton(
               padding: EdgeInsets.only(right: 8),
               onPressed: () {
-                Get.to(()=>NetworkTestScreen());
+                Get.to(() => NetworkTestScreen());
               },
               icon: Icon(
                 CupertinoIcons.info,
@@ -58,9 +59,17 @@ class HomeScreen extends StatelessWidget {
       ),
       bottomNavigationBar: _changeLocation(context),
       body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        Obx(
+       /* StreamBuilder<VpnStatus?>(
+            initialData: VpnStatus(),
+            stream: VpnEngine.vpnStatusSnapshot(),
+            builder: (context,snapshot){
+          return Obx(
+                () => _vpnButton(),
+          );
+            }),*/
+          Obx(
           () => _vpnButton(),
-        ),
+    ),
         Obx(
           () => Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -71,13 +80,13 @@ class HomeScreen extends StatelessWidget {
                     : _controller.vpn.value.countryLong,
                 subtitle: 'Страна',
                 icon: CircleAvatar(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: _controller.vpn.value.countryLong.isEmpty?Colors.blue:Colors.white,
                   radius: 30,
                   child: _controller.vpn.value.countryLong.isEmpty
                       ? Icon(
                           Icons.vpn_lock_rounded,
                           size: 30,
-                    color: Colors.white,
+                          color: Colors.white,
                         )
                       : null,
                   backgroundImage: _controller.vpn.value.countryLong.isEmpty
@@ -105,52 +114,62 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         StreamBuilder<VpnStatus?>(
-
           initialData: VpnStatus(),
           stream: VpnEngine.vpnStatusSnapshot(),
           builder: (context, snapshot) {
             print('1${snapshot.data?.byteIn}1');
             print(snapshot.connectionState);
             return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
 
-              HomeCard(
-                title: '${snapshot.connectionState==ConnectionState.active&&snapshot.data?.byteIn==' '?'--':snapshot.data?.byteIn.re??'0 kbps'}',
-                subtitle: 'Скачивание',
-                icon: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.lightGreen,
-                  child: Icon(
-                    Icons.arrow_downward_rounded,
-                    size: 30,
-                    color: Colors.white,
+                HomeCard(
+                  title:_controller.vpnState.value==VpnEngine.vpnDisconnected?'0 кбит/с':
+                      '${snapshot.connectionState == ConnectionState.active && snapshot.data?.byteIn == ' ' ? '--'
+                          : snapshot.data?.byteIn
+                          ?.replaceFirst('kB', 'кб')
+                          .replaceAll('kB/s', 'кб/с')
+                          .replaceAll('B/s', 'б/с') ?? '0 кбит/с'}',
+                  subtitle: 'Скачивание',
+                  icon: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.lightGreen,
+                    child: Icon(
+                      Icons.arrow_downward_rounded,
+                      size: 30,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              HomeCard(
-                title: '${snapshot.data?.byteOut ?? '0 kbps'}',
-                subtitle: 'Загрузка',
-                icon: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.blue,
-                  child: Icon(
-                    Icons.arrow_upward_rounded,
-                    size: 30,
-                    color: Colors.white,
+                HomeCard(
+                  title:  _controller.vpnState==VpnEngine.vpnDisconnected?'0 кбит/с':
+                  '${snapshot.connectionState == ConnectionState.active && snapshot.data?.byteOut == ' ' ? '--'
+                      : snapshot.data?.byteOut
+                      ?.replaceFirst('kB', 'кб')
+                      .replaceAll('kB/s', 'кб/с')
+                      .replaceAll('B/s', 'б/с') ?? '0 кбит/с'}',
+                  subtitle: 'Загрузка',
+                  icon: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.blue,
+                    child: Icon(
+                      Icons.arrow_upward_rounded,
+                      size: 30,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );},
+              ],
+            );
+          },
         ),
       ]),
     );
   }
 
-
-
-  Widget _vpnButton() => Column(children: [
+  Widget _vpnButton() =>Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
         Semantics(
           button: true,
           child: InkWell(
@@ -204,14 +223,15 @@ class HomeScreen extends StatelessWidget {
         ),
         Container(
           margin:
-              EdgeInsets.only(top: mq.height * .015, bottom: mq.height * .02),
+          EdgeInsets.only(top: mq.height * .015, bottom: mq.height * .02),
           padding: EdgeInsets.symmetric(vertical: 6, horizontal: 16),
           decoration: BoxDecoration(
               color: Colors.blue, borderRadius: BorderRadius.circular(15)),
           child: Text(
             _controller.vpnState.value == VpnEngine.vpnDisconnected
-                ? 'Не подключено':_controller.convertStatus(_controller.vpnState.value),
-                //: _controller.vpnState.replaceAll('_', '').toUpperCase(),
+                ? 'Не подключено'
+                : _controller.convertStatus(_controller.vpnState.value),
+            //: _controller.vpnState.replaceAll('_', '').toUpperCase(),
             style: TextStyle(
               fontSize: 12.5,
               color: Colors.white,
@@ -221,6 +241,12 @@ class HomeScreen extends StatelessWidget {
         Obx(() => CountDownTimer(
             startTimer: _controller.vpnState.value == VpnEngine.vpnConnected)),
       ]);
+  /* StreamBuilder<VpnStatus?>(
+      initialData: VpnStatus(),
+      stream: VpnEngine.vpnStatusSnapshot(),
+      builder: (context,snapshot){
+        return
+      })*/
 
   Widget _changeLocation(BuildContext context) => SafeArea(
         child: Semantics(

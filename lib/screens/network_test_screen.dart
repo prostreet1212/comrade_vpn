@@ -17,7 +17,7 @@ class NetworkTestScreen extends StatelessWidget {
     APIs.getIPDetails(ipData: ipData);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Network Test Screen'),
+        title: Text('Информация о сети'),
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 10, right: 10),
@@ -41,7 +41,7 @@ class NetworkTestScreen extends StatelessWidget {
           //ip
           NetworkCard(
             data: NetworkData(
-              title: 'IP Address',
+              title: 'IP-адрес',
               subtitle: ipData.value.query,
               icon: Icon(
                 CupertinoIcons.location_solid,
@@ -52,7 +52,7 @@ class NetworkTestScreen extends StatelessWidget {
           //isp
           NetworkCard(
             data: NetworkData(
-              title: 'Internet Provider',
+              title: 'Интернет провайдер',
               subtitle: ipData.value.isp,
               icon: Icon(
                 Icons.business,
@@ -63,9 +63,9 @@ class NetworkTestScreen extends StatelessWidget {
           //location
           NetworkCard(
             data: NetworkData(
-              title: 'Location',
+              title: 'Местоположение',
               subtitle: ipData.value.country.isEmpty
-                  ? 'Fetching ...'
+                  ? 'Загрузка ...'
                   : '${ipData.value.city}, ${ipData.value.regionName}, ${ipData.value.country}',
               icon: Icon(
                 CupertinoIcons.location,
@@ -76,7 +76,7 @@ class NetworkTestScreen extends StatelessWidget {
           //pin code
           NetworkCard(
             data: NetworkData(
-              title: 'Pin-code',
+              title: 'Пин код',
               subtitle: ipData.value.zip.isNotEmpty?ipData.value.zip:'-',
               icon: Icon(
                 CupertinoIcons.location_solid,
@@ -87,7 +87,7 @@ class NetworkTestScreen extends StatelessWidget {
           //timezone
           NetworkCard(
             data: NetworkData(
-              title: 'Timezone',
+              title: 'Часовой пояс',
               subtitle: ipData.value.timezone,
               icon: Icon(
                 CupertinoIcons.time,

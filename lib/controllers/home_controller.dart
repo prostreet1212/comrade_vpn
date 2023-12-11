@@ -14,13 +14,24 @@ import '../services/vpn_engine.dart';
 
 class HomeController extends GetxController {
   final Rx<Vpn> vpn = Pref.vpn.obs;
+   RxString vpnState = VpnEngine.vpnDisconnected.obs;
 
-  final RxString vpnState = VpnEngine.vpnDisconnected.obs;
+
+  Future<String> verifyConnect() async {
+    if(await VpnEngine.isConnected()){
+      vpnState=VpnEngine.vpnConnected.obs;
+      return VpnEngine.vpnConnected;
+    }else{
+      vpnState=VpnEngine.vpnDisconnected.obs;
+      return VpnEngine.vpnDisconnected;
+    }
+  }
 
   void connectToVpn() async{
     if (vpn.value.openVPNConfigDataBase64.isEmpty) {
       MyDialogs.info(
-        msg: 'Select a Location by clicking \'Change Location\'',);
+        msg: 'Выберите сервер (нажмите \"изменить сервер\")',);
+
       return;
     }
 

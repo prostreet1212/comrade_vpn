@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 1500),(){
+    Future.delayed(Duration(milliseconds: 2000),(){
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
       Get.off(()=>HomeScreen());
     });

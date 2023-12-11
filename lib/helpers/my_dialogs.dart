@@ -5,7 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 class MyDialogs {
   static success({required String msg}) {
     Get.snackbar(
-      'Success',
+      'Сообщение',
       msg,
       colorText: Colors.white,
       backgroundColor: Colors.green.withOpacity(.9),
@@ -14,7 +14,7 @@ class MyDialogs {
 
   static error({required String msg}) {
     Get.snackbar(
-      'Error',
+      'Ошибка',
       msg,
       colorText: Colors.white,
       backgroundColor: Colors.redAccent.withOpacity(.9),
@@ -22,6 +22,6 @@ class MyDialogs {
   }
 
   static info({required String msg}) {
-    Get.snackbar('Info', msg, colorText: Colors.white);
+    Get.snackbar('Инфо', msg, colorText: Colors.white);
   }
 }

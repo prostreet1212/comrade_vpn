@@ -12,7 +12,7 @@
     
     <application
         android:name="${applicationName}"
-        android:label="ComradeVpn"
+        android:label="Камрад ВПН"
         android:icon="@mipmap/ic_launcher"
         tools:ignore="AllowBackup">
 
