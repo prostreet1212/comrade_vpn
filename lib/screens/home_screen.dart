@@ -16,28 +16,47 @@ import '../models/vpn_config.dart';
 import '../models/vpn_status.dart';
 import '../services/vpn_engine.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final _controller = Get.put(HomeController());
 
   @override
+  void initState() {
+    super.initState();
+    asdf();
+  }
+
+  void asdf()async {
+    _controller.vpnState.value = await _controller.verifyConnect();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _controller.verifyConnect();
+
     //_controller.vpnState.value = VpnEngine.vpnConnected;
     ///Add listener to update vpn state
     VpnEngine.vpnStageSnapshot().listen((event) {
       _controller.vpnState.value = event;
+     print( 'session ${_controller.vpn.value.numVpnSessions}');
     });
     print(_controller.vpnState.value);
 
     return Scaffold(
+
       appBar: AppBar(
         //leading: Icon(CupertinoIcons.home),
         title: Text('Камрад ВПН'),
         actions: [
           IconButton(
-              onPressed: () {
+              onPressed: () async {
+
                 Get.changeThemeMode(
                     Pref.isDarkMode ? ThemeMode.light : ThemeMode.dark);
                 Pref.isDarkMode = !Pref.isDarkMode;
@@ -117,19 +136,18 @@ class HomeScreen extends StatelessWidget {
           initialData: VpnStatus(),
           stream: VpnEngine.vpnStatusSnapshot(),
           builder: (context, snapshot) {
-            print('1${snapshot.data?.byteIn}1');
             print(snapshot.connectionState);
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
                 HomeCard(
-                  title:_controller.vpnState.value==VpnEngine.vpnDisconnected?'0 кбит/с':
+                  title:_controller.vpnState.value==VpnEngine.vpnDisconnected?'0 Б/с':
                       '${snapshot.connectionState == ConnectionState.active && snapshot.data?.byteIn == ' ' ? '--'
-                          : snapshot.data?.byteIn
-                          ?.replaceFirst('kB', 'кбит')
-                          .replaceAll('kB/s', 'кбит/с')
-                          .replaceAll('B/s', 'бит/с') ?? '0 кбит/с'}',
+                          : snapshot.data?.byteIn??'0 Б/с'}',
+                         // ?.replaceFirst('kB', 'кБ')
+                         // .replaceAll('kB/s', 'кБ/с')
+                          //?.replaceAll('B/s', 'Б/с') ?? '0 Б/с'}',
                   subtitle: 'Скачивание',
                   icon: CircleAvatar(
                     radius: 30,
@@ -142,12 +160,12 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 HomeCard(
-                  title:  _controller.vpnState==VpnEngine.vpnDisconnected?'0 кбит/с':
+                  title:  _controller.vpnState.value==VpnEngine.vpnDisconnected?'0 кБ/с':
                   '${snapshot.connectionState == ConnectionState.active && snapshot.data?.byteOut == ' ' ? '--'
                       : snapshot.data?.byteOut
-                      ?.replaceFirst('kB', 'кбит')
-                      .replaceAll('kB/s', 'кбит/с')
-                      .replaceAll('B/s', 'б/с') ?? '0 кбит/с'}',
+                      ?.replaceFirst('kB', 'кБ')
+                      .replaceAll('kB/s', 'кБ/с')
+                      .replaceAll('B/s', 'Б/с') ?? '0 кБ/с'}',
                   subtitle: 'Загрузка',
                   icon: CircleAvatar(
                     radius: 30,
@@ -175,6 +193,7 @@ class HomeScreen extends StatelessWidget {
           child: InkWell(
             onTap: () {
               _controller.connectToVpn();
+
             },
             borderRadius: BorderRadius.circular(100),
             child: Container(
@@ -239,14 +258,10 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         Obx(() => CountDownTimer(
-            startTimer: _controller.vpnState.value == VpnEngine.vpnConnected)),
+            startTimer: _controller.vpnState.value == VpnEngine.vpnConnected),
+        ),
       ]);
-  /* StreamBuilder<VpnStatus?>(
-      initialData: VpnStatus(),
-      stream: VpnEngine.vpnStatusSnapshot(),
-      builder: (context,snapshot){
-        return
-      })*/
+
 
   Widget _changeLocation(BuildContext context) => SafeArea(
         child: Semantics(
