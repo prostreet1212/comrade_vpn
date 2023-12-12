@@ -142,12 +142,9 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
 
                 HomeCard(
-                  title:_controller.vpnState.value==VpnEngine.vpnDisconnected?'0 Б/с':
+                  title:_controller.vpnState.value==VpnEngine.vpnDisconnected?'0 kb/s':
                       '${snapshot.connectionState == ConnectionState.active && snapshot.data?.byteIn == ' ' ? '--'
-                          : snapshot.data?.byteIn??'0 Б/с'}',
-                         // ?.replaceFirst('kB', 'кБ')
-                         // .replaceAll('kB/s', 'кБ/с')
-                          //?.replaceAll('B/s', 'Б/с') ?? '0 Б/с'}',
+                          : snapshot.data?.byteIn ?? '0 kb/s'}',
                   subtitle: 'Скачивание',
                   icon: CircleAvatar(
                     radius: 30,
@@ -160,12 +157,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 HomeCard(
-                  title:  _controller.vpnState.value==VpnEngine.vpnDisconnected?'0 кБ/с':
+                  title:  _controller.vpnState.value==VpnEngine.vpnDisconnected?'0 kb/s':
                   '${snapshot.connectionState == ConnectionState.active && snapshot.data?.byteOut == ' ' ? '--'
-                      : snapshot.data?.byteOut
-                      ?.replaceFirst('kB', 'кБ')
-                      .replaceAll('kB/s', 'кБ/с')
-                      .replaceAll('B/s', 'Б/с') ?? '0 кБ/с'}',
+                      : snapshot.data?.byteOut ?? '0 kb/s'}',
                   subtitle: 'Загрузка',
                   icon: CircleAvatar(
                     radius: 30,
